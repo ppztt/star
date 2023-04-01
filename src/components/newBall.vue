@@ -1,19 +1,9 @@
 <template>
   <div class="main">
-    <div class="left"></div>
+    <!-- <div class="right"></div>
     <div class="center"></div>
-    <div class="right"></div>
-    <div
-      class="liuxing"
-      v-for="item in lxInfo"
-      :key="item[3]"
-      :style="{
-        width: item[0] + 'px',
-        top: item[1] + 'px',
-        left: item[2] + 'px',
-      }"
-    ></div>
-    <ul class="r">
+    <div class="left"></div> -->
+    <!-- <ul class="r">
       <li
         v-for="item in listInfo"
         :key="item[3]"
@@ -31,10 +21,10 @@
           width: item[0] + 'px',
           height: item[0] + 'px',
           top: item[1] + 'px',
-          right: item[2] + 'px',
+          left: item[2] + 'px',
         }"
       ></li>
-    </ul>
+    </ul> -->
     <ul class="l" ref="starList">
       <li
         ref="list"
@@ -45,7 +35,7 @@
           width: item[0] + 'px',
           height: item[0] + 'px',
           top: item[1] + 'px',
-          right: item[2] + 'px',
+          left: item[2] + 'px',
         }"
       ></li>
     </ul>
@@ -84,12 +74,21 @@ export default {
       ],
       // 添加可点击的星星，第一个数为宽高，第二个为top值，第三个为right值，最后一个是key值，不要跟前面的重复
       starInfo: [
-        [50, 100, 356, 13],
-        [30, 235, 220, 14],
-        [20, 434, 789, 15],
-        [36, 567, 890, 16],
-        [28, 287, 1390, 17],
-        [19, 198, 1200, 18],
+        [3, 100, 356, 13],
+        [3, 235, 220, 14],
+        [3, 434, 789, 15],
+        [3, 567, 890, 16],
+        [3, 287, 1390, 17],
+        [3, 198, 1200, 18],
+        [3, 198, 120, 19],
+        [3, 19, 1200, 20],
+        [3, 1239, 1200, 21],
+        [3, 419, 120, 22],
+        [3, 619, 150, 23],
+        [3, 519, 678, 24],
+        [3, 519, 667, 25],
+        [3, 519, 65, 26],
+        [3, 519, 180, 27],
       ],
       dialogVisible: false,
       input: "",
@@ -109,25 +108,25 @@ export default {
             this.$refs.starList.childNodes[i].style.top.split("p")[0]
           );
           let y = Number(
-            this.$refs.starList.childNodes[i].style.right.split("p")[0]
+            this.$refs.starList.childNodes[i].style.left.split("p")[0]
           );
           let m = -x;
           let n = -y;
           this.$refs.starList.childNodes[i].style.top = m + "px";
-          this.$refs.starList.childNodes[i].style.right = n + "px";
+          this.$refs.starList.childNodes[i].style.left = n + "px";
           let that = this;
           this.$refs.starList.childNodes[i].style.display = "block";
           let timer = setInterval(() => {
             m += x / 160;
             n += y / 160;
             that.$refs.starList.childNodes[i].style.top = m + "px";
-            that.$refs.starList.childNodes[i].style.right = n + "px";
+            that.$refs.starList.childNodes[i].style.left = n + "px";
             if (
               Number(
                 that.$refs.starList.childNodes[i].style.top.split("p")[0]
               ) >= x &&
               Number(
-                that.$refs.starList.childNodes[i].style.right.split("p")[0]
+                that.$refs.starList.childNodes[i].style.left.split("p")[0]
               ) >= y
             ) {
               clearInterval(timer);
@@ -150,7 +149,7 @@ export default {
           this.$refs.starList.childNodes[z].style.top.split("p")[0]
         );
         let y = Number(
-          this.$refs.starList.childNodes[z].style.right.split("p")[0]
+          this.$refs.starList.childNodes[z].style.left.split("p")[0]
         );
         let m = x;
         let n = y;
@@ -159,12 +158,12 @@ export default {
           m -= x/160;
           n -= y/160;
           this.$refs.starList.childNodes[z].style.top = m + "px";
-          this.$refs.starList.childNodes[z].style.right = n + "px";
+          this.$refs.starList.childNodes[z].style.left = n + "px";
           if (
             Number(this.$refs.starList.childNodes[z].style.top.split("p")[0]) <=
               0 &&
             Number(
-              this.$refs.starList.childNodes[z].style.right.split("p")[0]
+              this.$refs.starList.childNodes[z].style.left.split("p")[0]
             ) <= 0
           ) {
             clearInterval(timer2);
@@ -184,7 +183,9 @@ export default {
 .main {
   width: 100%;
   height: 100%;
-  background-color: #3c6690;
+  // background-color: #3c6690;
+
+  background-color: transparent;
   overflow: hidden;
   .r li {
     list-style: none;
@@ -192,13 +193,18 @@ export default {
     background-color: #ffd763;
     border-radius: 100%;
     box-shadow: 0px 0px 10px #ffd763;
+    
   }
   .l li {
     list-style: none;
     position: absolute;
-    background: url(../assets/图层2.png) no-repeat;
+    background-color: #fff;
+    border-radius: 100%;
     background-size: 100%;
     display: none;
+    box-shadow: 0px 0px 10px #fff;
+    animation: demo 2.5s;
+    animation-iteration-count: infinite
   }
   .left,
   .right,
@@ -208,10 +214,11 @@ export default {
     height: 80%;
     border-radius: 100%;
   }
-  .left {
+  .right {
     bottom: -58%;
     left: -47%;
     background-color: #272648;
+    box-shadow: 0px 0px 50px #272648;
     z-index: 2;
   }
   .center {
@@ -220,14 +227,14 @@ export default {
     left: 20%;
     box-shadow: 0px 0px 50px #f89424;
   }
-  .right {
+  .left {
     width: 200px;
     height: 200px;
     border-radius: 100%;
     background: linear-gradient(-45deg, #df9d25 0%, #ed9420 20%, #f64318 100%);
     box-shadow: 0px 0px 50px #f89424;
     top: 25%;
-    right: 35%;
+    left: 35%;
   }
   .liuxing {
     position: absolute;
@@ -240,13 +247,10 @@ export default {
   }
   @keyframes demo {
     100% {
-      top: 50%;
-      left: 50%;
+      opacity: 0.1;
     }
-
     0% {
-      top: 0%;
-      left: 100%;
+      opacity: 1;
     }
   }
 }
