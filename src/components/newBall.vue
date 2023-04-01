@@ -37,6 +37,7 @@
           top: item[1] + 'px',
           left: item[2] + 'px',
         }"
+        :class="{an: an}"
       ></li>
     </ul>
 
@@ -93,6 +94,7 @@ export default {
       dialogVisible: false,
       input: "",
       isLi: "",
+      an: false
     };
   },
   methods: {
@@ -129,6 +131,7 @@ export default {
                 that.$refs.starList.childNodes[i].style.left.split("p")[0]
               ) >= y
             ) {
+              this.an = true
               clearInterval(timer);
             }
           }, 10);
@@ -138,6 +141,7 @@ export default {
     hanlderClose() {
       this.dialogVisible = false;
       this.input = ""
+      this.an = false
       this.$nextTick(() => {
         let z;
         for (let i = 0; i < this.$refs.list.length; i++) {
@@ -203,6 +207,8 @@ export default {
     background-size: 100%;
     display: none;
     box-shadow: 0px 0px 10px #fff;
+  }
+  .an{
     animation: demo 2.5s;
     animation-iteration-count: infinite
   }
