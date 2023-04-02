@@ -9,8 +9,7 @@
       :class="{ an: an }"
       @click="clickStar"
     >
-      <div></div>
-      <div class="tail" ref="tail" :class="{tail2:tail}"></div>
+      <img src="../components/images/star.png" >
     </div>
     <!-- <ul class="r">
       <li
@@ -100,9 +99,8 @@ export default {
       input: "",
       isLi: "",
       an: false,
-      windowWidth: window.innerWidth,
-      windowHeight: window.innerHeight,
-      tail: false
+      tail: false,
+      startFly: true,
     };
   },
   methods: {
@@ -145,21 +143,9 @@ export default {
     //   });
     // },
     hanlderClose() {
-      this.$refs.tail.style.display = "block"
       this.dialogVisible = false;
-      this.tail = true
-      this.input = "";
       this.an = false;
-      let x = 50;
-      let timer = setInterval(() => {
-        x -= 50 / 160;
-        this.$refs.fly.style.top = x + "%";
-        this.$refs.fly.style.left = x + "%";
-        if (Number(this.$refs.fly.style.top.split("%")[0]) <= -10) {
-          clearInterval(timer);
-          this.$refs.tail.style.display = "none"
-        }
-      }, 5);
+      this.$refs.fly.style.display = "none";
     },
     // 多颗星星返回
     muchStar() {
@@ -197,6 +183,22 @@ export default {
         }, 10);
       });
     },
+    // 一颗星星返回
+    onlyStar() {
+      this.tail = true;
+      this.input = "";
+      this.an = false;
+      let x = 50;
+      let timer = setInterval(() => {
+        x -= 50 / 160;
+        this.$refs.fly.style.top = x + "%";
+        this.$refs.fly.style.left = x + "%";
+        if (Number(this.$refs.fly.style.top.split("%")[0]) <= -10) {
+          clearInterval(timer);
+          this.startFly = true;
+        }
+      }, 5);
+    },
     // 只有一颗星星
     starFly() {
       let x = -10;
@@ -209,16 +211,13 @@ export default {
         if (Number(this.$refs.fly.style.top.split("%")[0]) >= 50) {
           clearInterval(timer);
           this.an = true;
-          this.$refs.tail.style.display = "none"
+          this.startFly = false;
         }
       }, 5);
     },
   },
   mounted() {
-    // this.starAnimation();
-    this.$nextTick(() => {
-      this.starFly();
-    });
+    this.an = true;
   },
 };
 </script>
@@ -248,7 +247,7 @@ export default {
     box-shadow: 0px 0px 10px #fff;
   }
   .an {
-    // animation: demo 1.6s;
+    animation: demo 1.6s;
     animation-iteration-count: infinite;
   }
   .left,
@@ -277,37 +276,12 @@ export default {
     height: 50px;
     border-radius: 100%;
     background: url(../components/images/star.png);
+    // background: url(../components/images/图层1.png) no-repeat;
     background-size: 100%;
-    // box-shadow: inset 0px 0px 3px #000;
     transform: translate(-50%, -50%);
-
-    div:first-child {
+    img {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 15%;
-      height: 15%;
-      border-radius: 100%;
-      background: #fff;
-      box-shadow: 0px 0px 25px #fff;
-      z-index: 3;
-      overflow: visible;
-    }
-    .tail {
-      position: absolute;
-      transform: rotate(20deg);
-      top: -7px;
-      left: -147px;
-      width: 300%;
-      height: 300%;
-      background-size: 100% !important;
-      background: url(../components/images/shooting-star.png) no-repeat;
-    }
-    .tail2 {
-      transform: rotate(200deg);
-      top: -92px;
-      left: 50px;
+      width: 100%;
     }
   }
   .liuxing {
@@ -322,6 +296,7 @@ export default {
   @keyframes demo {
     100% {
       opacity: 0.1;
+      animation: demo2 1.6s;
     }
     0% {
       opacity: 1;

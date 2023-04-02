@@ -26,10 +26,10 @@ export default {
         strStar += '<div class="star star-' + (i + 1) + '"></div>';
       }
       for(let i = 0; i<50;i++){
-        strStar += '<div class="star" style="bottom:'+Math.random() * 200 + 'px; left: '+Math.random() * 1200+'px"></div>';
+        strStar += '<div class="star" style="bottom:'+Math.random() * 300 + 'px; left: '+Math.random() * 1200+'px"></div>';
       }
       for(let i = 0; i<50;i++){
-        strStar += '<div class="star star-animation" style="bottom:'+Math.random() * 200 + 'px; right: '+Math.random() * 1200+'px"></div>';
+        strStar += '<div class="star star-animation" style="bottom:'+Math.random() * 300 + 'px; right: '+Math.random() * 1200+'px"></div>';
       }
       for(let i = 0; i<50;i++){
         strStar += '<div class="star" style="top:'+Math.random() * 50 + '%; right: '+Math.random() * 50+'%"></div>';
