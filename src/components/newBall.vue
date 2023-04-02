@@ -1,8 +1,17 @@
 <template>
   <div class="main">
-    <!-- <div class="right"></div>
-    <div class="center"></div>
-    <div class="left"></div> -->
+    <!-- <div class="right"></div> -->
+    <!-- <div class="center"></div> -->
+    <div
+      class="left"
+      ref="fly"
+      style="top: 50%; left: 50%"
+      :class="{ an: an }"
+      @click="clickStar"
+    >
+      <div></div>
+      <div class="tail" ref="tail" :class="{tail2:tail}"></div>
+    </div>
     <!-- <ul class="r">
       <li
         v-for="item in listInfo"
@@ -37,11 +46,11 @@
           top: item[1] + 'px',
           left: item[2] + 'px',
         }"
-        :class="{an: an}"
+        :class="{ an: an }"
       ></li>
     </ul>
 
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="" :visible.sync="dialogVisible" width="30%">
       <el-input v-model="input" placeholder="请输入内容"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -69,10 +78,6 @@ export default {
         [5, 378, 430, 9],
         [5, 68, 100, 10],
       ],
-      lxInfo: [
-        [80, 478, 90, 11],
-        [200, 80, 600, 12],
-      ],
       // 添加可点击的星星，第一个数为宽高，第二个为top值，第三个为right值，最后一个是key值，不要跟前面的重复
       starInfo: [
         [3, 100, 356, 13],
@@ -94,54 +99,70 @@ export default {
       dialogVisible: false,
       input: "",
       isLi: "",
-      an: false
+      an: false,
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight,
+      tail: false
     };
   },
   methods: {
     clickStar(event) {
       this.dialogVisible = true;
-      this.isLi = event.target;
-      console.log(this.isLi);
     },
-    starAnimation() {
-      this.$nextTick(() => {
-        for (let i = 0; i < this.$refs.starList.childNodes.length; i++) {
-          let x = Number(
-            this.$refs.starList.childNodes[i].style.top.split("p")[0]
-          );
-          let y = Number(
-            this.$refs.starList.childNodes[i].style.left.split("p")[0]
-          );
-          let m = -x;
-          let n = -y;
-          this.$refs.starList.childNodes[i].style.top = m + "px";
-          this.$refs.starList.childNodes[i].style.left = n + "px";
-          let that = this;
-          this.$refs.starList.childNodes[i].style.display = "block";
-          let timer = setInterval(() => {
-            m += x / 160;
-            n += y / 160;
-            that.$refs.starList.childNodes[i].style.top = m + "px";
-            that.$refs.starList.childNodes[i].style.left = n + "px";
-            if (
-              Number(
-                that.$refs.starList.childNodes[i].style.top.split("p")[0]
-              ) >= x &&
-              Number(
-                that.$refs.starList.childNodes[i].style.left.split("p")[0]
-              ) >= y
-            ) {
-              this.an = true
-              clearInterval(timer);
-            }
-          }, 10);
-        }
-      });
-    },
+    // starAnimation() {
+    //   this.$nextTick(() => {
+    //     for (let i = 0; i < this.$refs.starList.childNodes.length; i++) {
+    //       let x = Number(
+    //         this.$refs.starList.childNodes[i].style.top.split("p")[0]
+    //       );
+    //       let y = Number(
+    //         this.$refs.starList.childNodes[i].style.left.split("p")[0]
+    //       );
+    //       let m = -x;
+    //       let n = -y;
+    //       this.$refs.starList.childNodes[i].style.top = m + "px";
+    //       this.$refs.starList.childNodes[i].style.left = n + "px";
+    //       let that = this;
+    //       this.$refs.starList.childNodes[i].style.display = "block";
+    //       let timer = setInterval(() => {
+    //         m += x / 160;
+    //         n += y / 160;
+    //         that.$refs.starList.childNodes[i].style.top = m + "px";
+    //         that.$refs.starList.childNodes[i].style.left = n + "px";
+    //         if (
+    //           Number(
+    //             that.$refs.starList.childNodes[i].style.top.split("p")[0]
+    //           ) >= x &&
+    //           Number(
+    //             that.$refs.starList.childNodes[i].style.left.split("p")[0]
+    //           ) >= y
+    //         ) {
+    //           this.an = true
+    //           clearInterval(timer);
+    //         }
+    //       }, 10);
+    //     }
+    //   });
+    // },
     hanlderClose() {
+      this.$refs.tail.style.display = "block"
       this.dialogVisible = false;
-      this.input = ""
-      this.an = false
+      this.tail = true
+      this.input = "";
+      this.an = false;
+      let x = 50;
+      let timer = setInterval(() => {
+        x -= 50 / 160;
+        this.$refs.fly.style.top = x + "%";
+        this.$refs.fly.style.left = x + "%";
+        if (Number(this.$refs.fly.style.top.split("%")[0]) <= -10) {
+          clearInterval(timer);
+          this.$refs.tail.style.display = "none"
+        }
+      }, 5);
+    },
+    // 多颗星星返回
+    muchStar() {
       this.$nextTick(() => {
         let z;
         for (let i = 0; i < this.$refs.list.length; i++) {
@@ -159,8 +180,8 @@ export default {
         let n = y;
         this.$refs.starList.childNodes[z].style.display = "block";
         let timer2 = setInterval(() => {
-          m -= x/160;
-          n -= y/160;
+          m -= x / 160;
+          n -= y / 160;
           this.$refs.starList.childNodes[z].style.top = m + "px";
           this.$refs.starList.childNodes[z].style.left = n + "px";
           if (
@@ -176,9 +197,28 @@ export default {
         }, 10);
       });
     },
+    // 只有一颗星星
+    starFly() {
+      let x = -10;
+      this.$refs.fly.style.top = "-10%";
+      this.$refs.fly.style.left = "-10%";
+      let timer = setInterval(() => {
+        x += 50 / 160;
+        this.$refs.fly.style.top = x + "%";
+        this.$refs.fly.style.left = x + "%";
+        if (Number(this.$refs.fly.style.top.split("%")[0]) >= 50) {
+          clearInterval(timer);
+          this.an = true;
+          this.$refs.tail.style.display = "none"
+        }
+      }, 5);
+    },
   },
   mounted() {
-    this.starAnimation();
+    // this.starAnimation();
+    this.$nextTick(() => {
+      this.starFly();
+    });
   },
 };
 </script>
@@ -197,7 +237,6 @@ export default {
     background-color: #ffd763;
     border-radius: 100%;
     box-shadow: 0px 0px 10px #ffd763;
-    
   }
   .l li {
     list-style: none;
@@ -208,9 +247,9 @@ export default {
     display: none;
     box-shadow: 0px 0px 10px #fff;
   }
-  .an{
-    animation: demo 2.5s;
-    animation-iteration-count: infinite
+  .an {
+    // animation: demo 1.6s;
+    animation-iteration-count: infinite;
   }
   .left,
   .right,
@@ -234,13 +273,42 @@ export default {
     box-shadow: 0px 0px 50px #f89424;
   }
   .left {
-    width: 200px;
-    height: 200px;
+    width: 50px;
+    height: 50px;
     border-radius: 100%;
-    background: linear-gradient(-45deg, #df9d25 0%, #ed9420 20%, #f64318 100%);
-    box-shadow: 0px 0px 50px #f89424;
-    top: 25%;
-    left: 35%;
+    background: url(../components/images/star.png);
+    background-size: 100%;
+    // box-shadow: inset 0px 0px 3px #000;
+    transform: translate(-50%, -50%);
+
+    div:first-child {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 15%;
+      height: 15%;
+      border-radius: 100%;
+      background: #fff;
+      box-shadow: 0px 0px 25px #fff;
+      z-index: 3;
+      overflow: visible;
+    }
+    .tail {
+      position: absolute;
+      transform: rotate(20deg);
+      top: -7px;
+      left: -147px;
+      width: 300%;
+      height: 300%;
+      background-size: 100% !important;
+      background: url(../components/images/shooting-star.png) no-repeat;
+    }
+    .tail2 {
+      transform: rotate(200deg);
+      top: -92px;
+      left: 50px;
+    }
   }
   .liuxing {
     position: absolute;

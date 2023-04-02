@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <div class="meteor-bg">
-    </div>
     <ball/>
     <Star />
   </div>
