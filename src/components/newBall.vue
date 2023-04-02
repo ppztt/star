@@ -295,8 +295,10 @@ export default {
   }
   @keyframes demo {
     100% {
+      opacity: 1;
+    }
+    50%{
       opacity: 0.1;
-      animation: demo2 1.6s;
     }
     0% {
       opacity: 1;
